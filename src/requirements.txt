@@ -1,0 +1,10 @@
+psycopg2-binary==2.9.1
+pydantic==1.8.2
+SQLAlchemy==1.4.25
+aiosqlite==0.17.0
+alembic==1.7.3
+fastapi==0.68.1
+uvicorn==0.13.4
+GeoAlchemy2==0.12.1
+databases==0.5.2
+asyncpg==0.24.0

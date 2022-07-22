@@ -1,0 +1,47 @@
+version: "3.4"
+
+services:
+
+  backend:
+    build: ""
+    container_name: "backend"
+    env_file:
+      - .env
+    command: bash -c "cd src && uvicorn app:app --host 0.0.0.0 --port 8000 --reload"
+    volumes:
+      - .:/src
+    ports:
+      - "8000:8000"
+
+  geozone-db:
+    container_name: geozone-postgres
+    image: postgis/postgis:14-3.2-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data_test:/var/lib/postgresql/data
+    restart: always
+    environment:
+      POSTGRES_USER: "test_user"
+      POSTGRES_PASSWORD: "password"
+      POSTGRES_DB: "test"
+
+  geozone-pgadmin:
+    container_name: geozone-pgadmin
+    image: dpage/pgadmin4:6.4
+    restart: always
+    user: root
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "test@test.com"
+      PGADMIN_DEFAULT_PASSWORD: "password"
+      PGADMIN_LISTEN_PORT: "8001"
+    ports:
+      - "8001:8001"
+    volumes:
+      - postgres_data_test:/var/lib/pgadmin
+    depends_on:
+      - geozone-db
+
+
+volumes:
+  postgres_data_test:
